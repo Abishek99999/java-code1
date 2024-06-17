@@ -1,0 +1,8 @@
+server:
+  port: 7171
+  
+spring:
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
