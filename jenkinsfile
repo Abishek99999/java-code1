@@ -29,6 +29,15 @@ pipeline {
 
             }
         }
+           stage('deploy on test') {
+            input {
+              message "can we further execcute this"
+              ok "yes"
+                
+
+
+            }
+        }
 
          stage('deploy on prod') {
             steps {
