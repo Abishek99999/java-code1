@@ -7,46 +7,39 @@ pipeline {
     stages {
         stage('test') {
             steps {
-                //mvn test
+                // Run tests
                 sh 'mvn test'
-
             }
         }
 
-          stage('build') {
+        stage('build') {
             steps {
-                // mvn package
+                // Package the application
                 sh 'mvn package'
-
             }
         }
 
-          stage('deploy on test') {
+        stage('deploy on test') {
             steps {
-                //deploy on container --plugin
+                // Deploy to the test environment
                 deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://10.0.128.210:8080')], contextPath: '/test', war: '**/*.war'
-
-
             }
         }
-           stage('deploy on test') {
+
+        stage('approval for production deployment') {
             input {
-              message "can we further execcute this"
-              ok "yes"
+                message "Can we further execute this?"
+                ok "Yes"
             }
-             steps {
-                  echo " permission for executable"
-                
-
-
+            steps {
+                echo "Permission granted for further execution"
             }
         }
 
-         stage('deploy on prod') {
+        stage('deploy on prod') {
             steps {
-                //deploy on container --plugin
+                // Deploy to the production environment
                 deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://10.0.128.187:8080')], contextPath: '/test', war: '**/*.war'
-
             }
         }
     }
