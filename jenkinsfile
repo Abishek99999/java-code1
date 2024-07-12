@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven'
+    }
+
+    stages {
+        stage('test') {
+            steps {
+                //mvn test
+                sh 'mvn test'
+
+            }
+        }
+
+          stage('build') {
+            steps {
+                // mvn package
+                sh 'mvn package'
+
+            }
+        }
+
+          stage('deploy on test') {
+            steps {
+                //deploy on container --plugin
+                deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://10.0.128.210:8080')], contextPath: '/test', war: '**/*.war'
+
+
+            }
+        }
+
+         stage('deploy on prod') {
+            steps {
+                //deploy on container --plugin
+                deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://10.0.128.187:8080')], contextPath: '/test', war: '**/*.war'
+
+            }
+        }
+    }
+}
