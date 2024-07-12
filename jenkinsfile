@@ -33,6 +33,9 @@ pipeline {
             input {
               message "can we further execcute this"
               ok "yes"
+            }
+             steps {
+                  echo " permission for executable"
                 
 
 
